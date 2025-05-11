@@ -1,3 +1,5 @@
+import drawing from "./layers/drawing";
+
 export default function () {
     const canvas = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -8,8 +10,7 @@ export default function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight + 6;
 
-    canvas.onmousedown = (e) => {
-        console.log(e.offsetX, " ", e.offsetY);
-        ctx.fillRect(e.offsetX, e.offsetY, 10, 10);
-    };
+    window.addEventListener("DOMContentLoaded", () => {
+        drawing();
+    });
 }

@@ -62,8 +62,20 @@ canvas {
     padding: 0;
     margin: 0;
 }
-
-@media (prefers-color-scheme: light) {
+#object-selector-layer {
+    position: absolute;
+    background-color: transparent;
+}
+.panel {
+    position: absolute;
+    bottom: 10px;
+    background-color: #1a1a1a;
+    border-radius: 4px;
+    padding: 2px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
         background-color: #ffffff;
@@ -74,4 +86,4 @@ canvas {
     button {
         background-color: #f9f9f9;
     }
-}
+} */
