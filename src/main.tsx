@@ -1,6 +1,5 @@
 import canvas from "./components/canvas/canvas";
 import tab from "./components/gui/tab";
-
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
     <canvas id = "object-selector-layer">test-2</canvas>
     <canvas id = "main-canvas">test</canvas>
