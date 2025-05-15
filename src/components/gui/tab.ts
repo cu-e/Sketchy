@@ -1,8 +1,7 @@
-import modelsProps, { allModelTypes } from "../models/modelsProps";
+import { allModelTypes } from "../models/modelsProps";
 
 export default () => {
     window.addEventListener("DOMContentLoaded", () => {
-        let selectTools: modelsProps = null;
         allModelTypes.map((m) => {
             const $model = document.getElementById(`${m}-model`);
 
