@@ -1,42 +1,75 @@
-export default function () {
-    const canvas = document.getElementById(
+import { modelStore } from "../../../settings";
+import createDrawingModel from "../../models/createDrawingModel";
+import { AnyModel } from "../../models/modelsProps";
+import drawingAllModels from "../../utiles/drawingAllModels";
+import { saveModelToLocalStorage } from "../../utiles/storageUtils";
+
+export default function (canvasCtx : CanvasRenderingContext2D) {
+    const $canvas = document.getElementById(
         "object-selector-layer"
     ) as HTMLCanvasElement;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = $canvas.getContext("2d");
 
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight + 6;
-    canvas.onmousedown = (eDown) => {
-        console.log(eDown.offsetX, " ", eDown.offsetY);
+    $canvas.width = window.innerWidth;
+    $canvas.height = window.innerHeight + 6;
+    if (window.devicePixelRatio > 1) {
+        var canvasWidth = $canvas.width;
+        var canvasHeight = $canvas.height;
+        $canvas.width = canvasWidth * window.devicePixelRatio;
+        $canvas.height = canvasHeight * window.devicePixelRatio;
+        $canvas.style.width = canvasWidth + "px";
+        $canvas.style.height = canvasHeight + "px";
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    let currentModel: AnyModel | null = null;
 
-        //     switch (modelStore.selected) {
-        //         case "circle":
-        //             canvas.onmousemove = (e) => {
-        //                 console.log(e.offsetX, " ", e.offsetY);
-        //                 ctx.fillRect(e.offsetX, e.offsetY, 5, 5);
-        //             };
+    $canvas.onmousedown = (eDown) => {
+        const startX = eDown.offsetX;
+        const startY = eDown.offsetY;
+        currentModel = createDrawingModel(
+            String(crypto.randomUUID()),
+            startX,
+            startY,
+            startX,
+            startY
+        );
 
-        //             break;
+        $canvas.onmousemove = (e) => {
+            ctx.beginPath();
 
-        //         case "rect":
-        //             canvas.onmousemove = (e) => {
-        //                 ctx.clearRect(0, 0, canvas.width, canvas.height); // очистка
-        //                 ctx.beginPath();
-        //                 ctx.rect(
-        //                     e.offsetX,
-        //                     e.offsetY,
-        //                     eDown.offsetX - e.offsetX,
-        //                     eDown.offsetY - e.offsetY
-        //                 );
-        //                 ctx.fill();
-        //             };
-        //             break;
-        //     }
-        // };
-        // canvas.onmouseup = () => {
-        //     canvas.onmousemove = () => {};
+            if (!currentModel) return;
+
+            currentModel.erase(ctx);
+            ctx.beginPath();
+
+            ctx.closePath();
+
+            currentModel = createDrawingModel(
+                String(crypto.randomUUID()),
+                startX,
+                startY,
+                e.offsetX,
+                e.offsetY
+            );
+
+            if (currentModel) {
+                currentModel.drawing(ctx);
+            }
+        };
+        switch (modelStore.selected) {
+        }
+    };
+    $canvas.onmouseup = () => {
+        $canvas.onmousemove = () => {
+            return null;
+        };
+        if (currentModel) {
+            saveModelToLocalStorage(currentModel);
+            drawingAllModels(canvasCtx);
+            currentModel.erase(ctx);
+        }
     };
 }

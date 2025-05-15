@@ -1,3 +1,4 @@
+import drawingAllModels from "../utiles/drawingAllModels";
 import drawing from "./layers/drawing";
 
 export default function () {
@@ -9,8 +10,18 @@ export default function () {
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight + 6;
-
+    if (window.devicePixelRatio > 1) {
+        var canvasWidth = canvas.width;
+        var canvasHeight = canvas.height;
+        canvas.width = canvasWidth * window.devicePixelRatio;
+        canvas.height = canvasHeight * window.devicePixelRatio;
+        canvas.style.width = canvasWidth + "px";
+        canvas.style.height = canvasHeight + "px";
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
     window.addEventListener("DOMContentLoaded", () => {
-        drawing();
+        drawingAllModels(ctx);
+        
+        drawing(ctx);
     });
 }

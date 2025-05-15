@@ -1,9 +1,9 @@
 import { modelStore } from "../../settings";
-import { allModelTypes } from "../models/modelsProps";
+import { ALL_MODEL_TYPES } from "../models/modelsProps";
 
 export default () => {
     window.addEventListener("DOMContentLoaded", () => {
-        allModelTypes.map((m) => {
+        ALL_MODEL_TYPES.map((m) => {
             const $model = document.getElementById(`${m}-model`);
 
             if ($model instanceof HTMLElement) {
